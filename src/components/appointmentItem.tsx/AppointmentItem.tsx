@@ -11,8 +11,11 @@ function AppointmentItem({ id, date, name, service, phone }: ActiveAppointment) 
 		const hours = dayjs(date).diff(undefined, "h");
 		const minutes = dayjs(date).diff(undefined, "m") % 60;
 		setTimeLeft(`${hours}:${minutes}`);
-		// console.log(dayjs(date).diff(undefined, "h"))
-		// console.log(dayjs(date).diff(undefined, "m") % 60)
+		const intervalId = setInterval(() => { setTimeLeft(`${dayjs(date).diff(undefined, "h")}:${dayjs(date).diff(undefined, "m") % 60}`) }, 6000);
+
+		return () => {
+			clearInterval(intervalId)
+		}
 	}, [date])
 
 	const formattedDate = dayjs(date).format('DD/MM/YYYY HH:mm');

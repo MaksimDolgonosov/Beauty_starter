@@ -2,6 +2,7 @@ import { IAppointmentAction, ActionsTypes } from "./actions";
 import { IAppointment, ActiveAppointment } from "../../shared/interfaces/appointment.interface";
 
 export interface IInitialState {
+
     allAppointments: IAppointment[] | [],
     allActiveAppointments: ActiveAppointment[] | []
 }

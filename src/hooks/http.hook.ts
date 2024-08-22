@@ -13,10 +13,12 @@ interface RequestConfig {
     headers?: HTTPHeaders
 }
 
+export type LoadingStatus = "idle" | "loading" | "error";
+
 
 export const useHttp = () => {
-    const [loadingStatus, setLoadingStatus] = useState<string>("idle");
-    
+    const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>("idle");
+
 
 
     const request = useCallback(async (

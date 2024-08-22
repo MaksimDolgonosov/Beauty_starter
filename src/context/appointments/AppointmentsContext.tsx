@@ -2,6 +2,7 @@ import { createContext, useReducer } from "react";
 import reducer, { IInitialState } from "./reducer";
 import { useAppointmentService } from "../../services/AppointmentService";
 import { ActionsTypes } from "./actions";
+import { LoadingStatus } from "../../hooks/http.hook";
 
 const initialState: IInitialState = {
     allAppointments: [],
@@ -13,11 +14,13 @@ interface ProviderProps {
 }
 
 interface IContextValue extends IInitialState {
+    loadingStatus: LoadingStatus
     getAllAppointments: () => void;
     getAllActiveAppointments: () => void
 }
 
 export const AppointmentContext = createContext<IContextValue>({
+    loadingStatus: "idle",
     allAppointments: initialState.allAppointments,
     allActiveAppointments: initialState.allActiveAppointments,
     getAllAppointments: () => { },
@@ -30,6 +33,7 @@ export const AppointmentContextProvider = ({ children }: ProviderProps) => {
 
 
     const value: IContextValue = {
+        loadingStatus: loadingStatus,
         allAppointments: state.allAppointments,
         allActiveAppointments: state.allActiveAppointments,
         getAllAppointments: () => {
