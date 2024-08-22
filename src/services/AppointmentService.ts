@@ -1,4 +1,5 @@
-import { useHttp } from "../hooks/http.hook"
+import { useHttp } from "../hooks/http.hook";
+import dayjs from 'dayjs';
 import hasRequiredFields from "../utils/hasRequiredFields";
 import { IAppointment, ActiveAppointment } from "../shared/interfaces/appointment.interface";
 const requiredFields = ["id", "date", "name", "service", "phone", "canceled"];
@@ -6,6 +7,7 @@ const requiredFields = ["id", "date", "name", "service", "phone", "canceled"];
 export const useAppointmentService = () => {
     const { loadingStatus, request } = useHttp();
     const _apiBase = "http://localhost:3001/appointments";
+
 
 
     const getAllAppointments = async (): Promise<IAppointment[]> => {
@@ -21,16 +23,19 @@ export const useAppointmentService = () => {
 
     const getAllActiveAppointments = async () => {
         const base = await getAllAppointments();
-        const transformed: ActiveAppointment[] = base.map((item) => {
-            return {
-                id: item.id,
-                date: item.date,
-                name: item.name,
-                service: item.service,
-                phone: item.phone,
+        const transformed: ActiveAppointment[] = base
+            .filter(item => !item.canceled)
+            .filter(item => dayjs(item.date).diff(undefined, "minute") > 0)
+            .map((item) => {
+                return {
+                    id: item.id,
+                    date: item.date,
+                    name: item.name,
+                    service: item.service,
+                    phone: item.phone,
 
-            }
-        })
+                }
+            })
         return transformed;
     }
 
