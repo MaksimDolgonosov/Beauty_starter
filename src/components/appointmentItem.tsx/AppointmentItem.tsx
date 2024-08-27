@@ -5,9 +5,12 @@ import { Optional } from 'utility-types';
 
 import "./appointmentItem.scss";
 
-type AppointmentProps = Optional<IAppointment, "canceled">
+type AppointmentProps = Optional<IAppointment, "canceled"> & {
+	openModal: (state: boolean) => void,
+	setSelectId: () => void
+}
 
-function AppointmentItem({ id, date, name, service, phone, canceled }: AppointmentProps) {
+function AppointmentItem({ id, date, name, service, phone, canceled, openModal, setSelectId }: AppointmentProps) {
 	const [timeLeft, setTimeLeft] = useState<string | null>(null);
 	useEffect(() => {
 		const hours = dayjs(date).diff(undefined, "h");
@@ -35,7 +38,10 @@ function AppointmentItem({ id, date, name, service, phone, canceled }: Appointme
 					<span>Time left:</span>
 					<span className="appointment__timer">{timeLeft}</span>
 				</div>
-				<button className="appointment__cancel">Cancel</button>
+				<button className="appointment__cancel" onClick={() => {
+					openModal(true)
+					setSelectId();
+				}}>Cancel</button>
 			</> : <div className="appointment__canceled">Canceled</div>}
 
 			{/* <div className="appointment__canceled">Canceled</div> */}
