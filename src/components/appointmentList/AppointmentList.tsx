@@ -19,7 +19,8 @@ function AppointmentList() {
 		e.preventDefault();
 		getAllActiveAppointments();
 	}
-	// console.log(allActiveAppointments)
+	
+	console.log("render list")
 	return (
 		<>
 			{loadingStatus === "error" ?
@@ -31,9 +32,9 @@ function AppointmentList() {
 				: null}
 			{loadingStatus === "loading" ? <Spinner /> : null}
 			{allActiveAppointments.map(({ id, date, name, service, phone }: ActiveAppointment) => {
-				return <AppointmentItem id={id} key={id} date={date} name={name} service={service} phone={phone} openModal={setIsOpen} setSelectId={()=>setSelectId(id)} />
+				return <AppointmentItem id={id} key={id} date={date} name={name} service={service} phone={phone} openModal={setIsOpen} setSelectId={() => setSelectId(id)} />
 			})}
-			{isOpen ? <CancelModal toggleModal={setIsOpen} selectedId={selectedId}/> : null}
+			{isOpen ? <CancelModal toggleModal={setIsOpen} selectedId={selectedId} /> : null}
 		</>
 	);
 }

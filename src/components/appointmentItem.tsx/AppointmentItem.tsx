@@ -24,6 +24,8 @@ function AppointmentItem({ id, date, name, service, phone, canceled, openModal, 
 	}, [date])
 
 	const formattedDate = dayjs(date).format('DD/MM/YYYY HH:mm');
+
+	console.log("render item");
 	return (
 		<div className="appointment">
 			<div className="appointment__info">
