@@ -21,7 +21,7 @@ function CancelModal({ toggleModal, selectedId }: ICancelProps) {
 		}
 	}, [toggleModal])
 
-	console.log("render")
+	// console.log("render")
 	return (
 		<Portal>
 			<div className="modal">

@@ -9,7 +9,7 @@ export const useAppointmentService = () => {
     const _apiBase = "http://localhost:3001/appointments";
 
 
-
+    console.log("service hook");
     const getAllAppointments = async (): Promise<IAppointment[]> => {
         const res = await request({ url: _apiBase });
         if (Array.isArray(res) && res.every((item: IAppointment) => {
