@@ -44,7 +44,7 @@ export const useHttp = () => {
         }
     }, [])
 
-    const patch = async (
+    const modification = async (
         { url,
             method = "PATCH",
             body = null,
@@ -67,5 +67,5 @@ export const useHttp = () => {
         }
     }
 
-    return { loadingStatus, request }
+    return { loadingStatus, request, modification }
 }

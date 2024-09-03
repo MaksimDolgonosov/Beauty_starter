@@ -5,7 +5,7 @@ import { IAppointment, ActiveAppointment } from "../shared/interfaces/appointmen
 const requiredFields = ["id", "date", "name", "service", "phone", "canceled"];
 
 export const useAppointmentService = () => {
-    const { loadingStatus, request } = useHttp();
+    const { loadingStatus, request, modification } = useHttp();
     const _apiBase = "http://localhost:3001/appointments";
 
 
@@ -39,6 +39,16 @@ export const useAppointmentService = () => {
         return transformed;
     }
 
-    return { loadingStatus, getAllAppointments, getAllActiveAppointments }
+    const setCancelAppointment = async (id: number): Promise<IAppointment> => {
+        const res = await modification({ url: `${_apiBase}/${id}`, body: JSON.stringify({ canceled: true }) });
+        if (hasRequiredFields(res, requiredFields)) {
+            return res
+        } else {
+            throw new Error("Something wrong!");
+        }
+
+    }
+
+    return { loadingStatus, getAllAppointments, getAllActiveAppointments, setCancelAppointment }
 
 }
