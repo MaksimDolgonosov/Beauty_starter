@@ -18,14 +18,14 @@ function AppointmentList() {
 
 	useEffect(() => {
 		getAllActiveAppointments();
-	}, [isOpen])
+	}, [])
 
 	const reload: React.MouseEventHandler = (e): void => {
 		e.preventDefault();
 		getAllActiveAppointments();
 	}
 
-	//console.log("render list")
+	console.log("render list")
 	return (
 		<>
 			{loadingStatus === "error" ?

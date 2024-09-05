@@ -2,7 +2,8 @@ import { useState, useEffect, memo } from 'react';
 import dayjs from 'dayjs';
 import { IAppointment } from "../../shared/interfaces/appointment.interface";
 import { Optional } from 'utility-types';
-
+import { useContext } from 'react';
+import { AppointmentContext } from '../../context/appointments/AppointmentsContext';
 import "./appointmentItem.scss";
 
 type AppointmentProps = Optional<IAppointment, "canceled"> & {
@@ -12,12 +13,26 @@ type AppointmentProps = Optional<IAppointment, "canceled"> & {
 
 const AppointmentItem = memo(({ id, date, name, service, phone, canceled, openModal }: AppointmentProps) => {
 	const [timeLeft, setTimeLeft] = useState<string | null>(null);
+	const { getAllActiveAppointments } = useContext(AppointmentContext);
+
 	useEffect(() => {
 		const hours = dayjs(date).diff(undefined, "h");
 		const minutes = dayjs(date).diff(undefined, "m") % 60;
 		setTimeLeft(`${hours}:${minutes}`);
-		const intervalId = setInterval(() => { setTimeLeft(`${dayjs(date).diff(undefined, "h")}:${dayjs(date).diff(undefined, "m") % 60}`) }, 6000);
 
+		const intervalId = setInterval(() => {
+			console.log(dayjs(date).diff(undefined, "h"), dayjs(date).diff(undefined, "m") % 60);
+			if (dayjs(date).diff(undefined, "h") <= 0 && dayjs(date).diff(undefined, "m") % 60 <= 0) {
+				console.log("negative number");
+				getAllActiveAppointments();
+				clearInterval(intervalId);
+			} else {
+				setTimeLeft(`${dayjs(date).diff(undefined, "h")}:${dayjs(date).diff(undefined, "m") % 60}`)
+			}
+
+
+		}, 6000);
+		// console.log(date);
 		return () => {
 			clearInterval(intervalId)
 		}
@@ -25,7 +40,7 @@ const AppointmentItem = memo(({ id, date, name, service, phone, canceled, openMo
 
 	const formattedDate = dayjs(date).format('DD/MM/YYYY HH:mm');
 
-	//console.log("render item");
+	// console.log(date);
 	return (
 		<div className="appointment">
 			<div className="appointment__info">

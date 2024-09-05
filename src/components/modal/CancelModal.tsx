@@ -1,6 +1,8 @@
 import "./modal.scss";
+import { useContext } from "react";
+import { AppointmentContext } from "../../context/appointments/AppointmentsContext";
 import Portal from "../portal/portal";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppointmentService } from "../../services/AppointmentService";
 
 interface ICancelProps {
@@ -9,22 +11,37 @@ interface ICancelProps {
 }
 
 function CancelModal({ toggleModal, selectedId }: ICancelProps) {
+	const { getAllActiveAppointments, loadingStatus } = useContext(AppointmentContext);
 	const { setCancelAppointment } = useAppointmentService();
-	
-	
-	const cancelAppointment = () => {
-		toggleModal(false);
-		setCancelAppointment(selectedId)
-			.then(res => console.log(res));
+	const [btnDisabled, setBtnDisabled] = useState(false);
+	const [cancelStatus, setCancelStatus] = useState<boolean | null>(null);
 
+	const cancelAppointment = () => {
+		setBtnDisabled(true);
+
+		setCancelAppointment(selectedId)
+			.then(res => {
+				setBtnDisabled(false);
+				setCancelStatus(true)
+				// toggleModal(false);
+				console.log(res)
+			})
+			.catch(error => console.log(`Something wrong: ${error}`))
 
 	}
 
-
+	const closeModal = () => {
+		toggleModal(false);
+		if (cancelStatus) {
+			getAllActiveAppointments();
+		}
+		// setCancelStatus(null);
+		// setBtnDisabled(false);
+	}
 
 	const escListener = (e: KeyboardEvent): void => {
 		if (e.key === "Escape") {
-			toggleModal(false)
+			closeModal();
 		}
 	}
 	useEffect(() => {
@@ -32,7 +49,7 @@ function CancelModal({ toggleModal, selectedId }: ICancelProps) {
 		return () => {
 			document.body.removeEventListener("keydown", escListener)
 		}
-	}, [toggleModal])
+	}, [toggleModal, cancelStatus])
 
 	// console.log("render")
 	return (
@@ -43,10 +60,12 @@ function CancelModal({ toggleModal, selectedId }: ICancelProps) {
 						Are you sure you want to delete the appointment? #{selectedId}
 					</span>
 					<div className="modal__btns">
-						<button className="modal__ok" onClick={cancelAppointment}>Ok</button>
-						<button className="modal__close" onClick={() => toggleModal(false)}>Close</button>
+						<button className="modal__ok" onClick={cancelAppointment} disabled={btnDisabled}>Ok</button>
+						<button className="modal__close" onClick={closeModal}>Close</button>
 					</div>
-					<div className="modal__status">Success</div>
+					<div className="modal__status">
+						{cancelStatus === null ? "" : cancelStatus ? "Success" : "Error, try again"}
+					</div>
 				</div>
 			</div>
 		</Portal>

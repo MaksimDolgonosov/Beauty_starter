@@ -20,7 +20,7 @@ export const useHttp = () => {
     const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>("idle");
 
 
-    console.log("http hook");
+   // console.log("http hook");
     const request = useCallback(async (
         { url,
             method = "GET",
