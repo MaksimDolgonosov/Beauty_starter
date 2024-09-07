@@ -21,9 +21,7 @@ const AppointmentItem = memo(({ id, date, name, service, phone, canceled, openMo
 		setTimeLeft(`${hours}:${minutes}`);
 
 		const intervalId = setInterval(() => {
-			console.log(dayjs(date).diff(undefined, "h"), dayjs(date).diff(undefined, "m") % 60);
 			if (dayjs(date).diff(undefined, "h") <= 0 && dayjs(date).diff(undefined, "m") % 60 <= 0) {
-				console.log("negative number");
 				getAllActiveAppointments();
 				clearInterval(intervalId);
 			} else {
@@ -39,8 +37,7 @@ const AppointmentItem = memo(({ id, date, name, service, phone, canceled, openMo
 	}, [date])
 
 	const formattedDate = dayjs(date).format('DD/MM/YYYY HH:mm');
-
-	// console.log(date);
+	 console.log("render item");
 	return (
 		<div className="appointment">
 			<div className="appointment__info">

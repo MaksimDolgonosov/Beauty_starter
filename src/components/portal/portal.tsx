@@ -1,6 +1,6 @@
 import { useState, useLayoutEffect, ReactNode } from "react";
 import { createPortal } from "react-dom";
-import { deflate } from "zlib";
+//import { deflate } from "zlib";
 
 interface IPortalProps {
     children: ReactNode,

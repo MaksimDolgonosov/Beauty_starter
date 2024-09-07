@@ -1,38 +1,44 @@
-import { useEffect, useReducer, useState } from "react";
-
 import Header from "../header/Header";
 import SchedulePage from "../../pages/schedule/SchedulePage";
-// import HistoryPage from "../../pages/history/HistoryPage";
-// import CancelModal from "../modal/CancelModal";
+ import HistoryPage from "../../pages/history/HistoryPage";
 import { AppointmentContextProvider } from "../../context/appointments/AppointmentsContext";
-
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
 import "./app.scss";
 
-
-
-
-
+const router = createBrowserRouter([
+	{
+		path: "/",
+		element: <Root />,
+		children: [
+			{
+				path: "/",
+				element: <SchedulePage />,
+			},
+			{
+				path: "/schedule",
+				element: <SchedulePage />,
+			},
+			{
+				path: "/history",
+				element: <HistoryPage />,
+			},
+		],
+	},
+]);
 
 
 function App() {
-	// const [appointments, setAppointments] = useState<IAppointment[]>();
+		return <RouterProvider router={router} />;
+}
 
-
-
-
-
-
+function Root() {
 	return (
 		<main className="board">
 			<Header />
-
 			<AppointmentContextProvider>
-				<SchedulePage />
+				<Outlet />
 			</AppointmentContextProvider>
-
-			{/* <HistoryPage /> */}
-			{/* <CancelModal /> */}
 		</main>
 	);
 }

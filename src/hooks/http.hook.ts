@@ -9,7 +9,7 @@ interface HTTPHeaders {
 interface RequestConfig {
     url: string,
     method?: HTTPRequestMethods,
-    body?: string | null,
+    body?: string | null | FormData,
     headers?: HTTPHeaders
 }
 
@@ -20,7 +20,6 @@ export const useHttp = () => {
     const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>("idle");
 
 
-   // console.log("http hook");
     const request = useCallback(async (
         { url,
             method = "GET",
@@ -44,7 +43,9 @@ export const useHttp = () => {
         }
     }, [])
 
-    const modification = async (
+
+
+    const modification = useCallback(async (
         { url,
             method = "PATCH",
             body = null,
@@ -65,7 +66,7 @@ export const useHttp = () => {
             setLoadingStatus("error");
             throw error;
         }
-    }
+    },[]);
 
     return { loadingStatus, request, modification }
 }

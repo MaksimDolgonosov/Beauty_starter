@@ -4,6 +4,7 @@ import { AppointmentContext } from "../../context/appointments/AppointmentsConte
 import Portal from "../portal/portal";
 import { useEffect, useState } from "react";
 import { useAppointmentService } from "../../services/AppointmentService";
+import Spinner from "../spinner/Spinner";
 
 interface ICancelProps {
 	toggleModal: (state: boolean) => void,
@@ -12,7 +13,8 @@ interface ICancelProps {
 
 function CancelModal({ toggleModal, selectedId }: ICancelProps) {
 	const { getAllActiveAppointments, loadingStatus } = useContext(AppointmentContext);
-	const { setCancelAppointment } = useAppointmentService();
+	const { setCancelAppointment} = useAppointmentService();
+	const [loading, setLoading] = useState("idle");
 	const [btnDisabled, setBtnDisabled] = useState(false);
 	const [cancelStatus, setCancelStatus] = useState<boolean | null>(null);
 
@@ -24,7 +26,7 @@ function CancelModal({ toggleModal, selectedId }: ICancelProps) {
 				setBtnDisabled(false);
 				setCancelStatus(true)
 				// toggleModal(false);
-				console.log(res)
+				//console.log(res)
 			})
 			.catch(error => console.log(`Something wrong: ${error}`))
 
@@ -51,7 +53,6 @@ function CancelModal({ toggleModal, selectedId }: ICancelProps) {
 		}
 	}, [toggleModal, cancelStatus])
 
-	// console.log("render")
 	return (
 		<Portal>
 			<div className="modal">
@@ -64,6 +65,7 @@ function CancelModal({ toggleModal, selectedId }: ICancelProps) {
 						<button className="modal__close" onClick={closeModal}>Close</button>
 					</div>
 					<div className="modal__status">
+						{loadingStatus === "loading" ? <Spinner /> : null}
 						{cancelStatus === null ? "" : cancelStatus ? "Success" : "Error, try again"}
 					</div>
 				</div>
