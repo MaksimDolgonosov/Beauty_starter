@@ -45,28 +45,28 @@ export const useHttp = () => {
 
 
 
-    const modification = useCallback(async (
-        { url,
-            method = "PATCH",
-            body = null,
-            headers = { "Content-Type": "application/json" }
-        }: RequestConfig) => {
+    // const modification = useCallback(async (
+    //     { url,
+    //         method = "PATCH",
+    //         body = null,
+    //         headers = { "Content-Type": "application/json" }
+    //     }: RequestConfig) => {
 
-        setLoadingStatus("loading");
-        try {
-            const response = await fetch(url, { method, body, headers });
-            if (!response.ok) {
-                throw new Error(`Could not fetch ${url}, status: ${response.status}`)
-            }
+    //     setLoadingStatus("loading");
+    //     try {
+    //         const response = await fetch(url, { method, body, headers });
+    //         if (!response.ok) {
+    //             throw new Error(`Could not fetch ${url}, status: ${response.status}`)
+    //         }
 
-            const data = await response.json();
-            setLoadingStatus("idle");
-            return data;
-        } catch (error) {
-            setLoadingStatus("error");
-            throw error;
-        }
-    },[]);
+    //         const data = await response.json();
+    //         setLoadingStatus("idle");
+    //         return data;
+    //     } catch (error) {
+    //         setLoadingStatus("error");
+    //         throw error;
+    //     }
+    // },[]);
 
-    return { loadingStatus, request, modification }
+    return { loadingStatus, request }
 }

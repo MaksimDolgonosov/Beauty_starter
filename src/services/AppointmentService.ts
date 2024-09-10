@@ -7,7 +7,7 @@ import { IAppointment, ActiveAppointment } from "../shared/interfaces/appointmen
 const requiredFields = ["id", "date", "name", "service", "phone", "canceled"];
 dayjs.extend(customParseFormat);
 export const useAppointmentService = () => {
-    const { loadingStatus, request, modification } = useHttp();
+    const { loadingStatus, request } = useHttp();
     const _apiBase = "http://localhost:3001/appointments";
 
 
@@ -61,6 +61,13 @@ export const useAppointmentService = () => {
                 body: JSON.stringify(body)
             });
     }
+
+
+    // const getHistory = async () => {
+    //     const base = await getAllAppointments();
+
+
+    // }
 
     return { loadingStatus, getAllAppointments, getAllActiveAppointments, setCancelAppointment, createNewAppointment }
 

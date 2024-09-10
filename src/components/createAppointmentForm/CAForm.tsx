@@ -6,7 +6,7 @@ import { AppointmentContext } from "../../context/appointments/AppointmentsConte
 
 function CAForm() {
 	const { createNewAppointment } = useAppointmentService();
-	const { getAllActiveAppointments } = useContext(AppointmentContext);
+	const { getAllActiveAppointments, getAllAppointments } = useContext(AppointmentContext);
 
 	const [creationStatus, setCreationStatus] = useState(false);
 	const [formData, setFormData] = useState<IAppointment>({
@@ -23,6 +23,7 @@ function CAForm() {
 		setCreationStatus(true)
 		createNewAppointment(formData)
 			.then(() => {
+				getAllAppointments();
 				getAllActiveAppointments();
 				setFormData({ id: 1, date: "", name: "", service: "", phone: "", canceled: false })
 				setCreationStatus(false)

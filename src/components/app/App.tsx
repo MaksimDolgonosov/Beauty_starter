@@ -1,8 +1,9 @@
 import Header from "../header/Header";
 import SchedulePage from "../../pages/schedule/SchedulePage";
- import HistoryPage from "../../pages/history/HistoryPage";
+import HistoryPage from "../../pages/history/HistoryPage";
 import { AppointmentContextProvider } from "../../context/appointments/AppointmentsContext";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import PageNotFound from "../../pages/404/404";
 
 import "./app.scss";
 
@@ -10,6 +11,7 @@ const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <Root />,
+		errorElement: <PageNotFound />,
 		children: [
 			{
 				path: "/",
@@ -29,7 +31,7 @@ const router = createBrowserRouter([
 
 
 function App() {
-		return <RouterProvider router={router} />;
+	return <RouterProvider router={router} />;
 }
 
 function Root() {
