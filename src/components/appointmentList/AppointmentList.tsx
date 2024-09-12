@@ -37,7 +37,7 @@ function AppointmentList() {
 				: null}
 			{loadingStatus === "loading" ? <Spinner /> : null}
 			{allActiveAppointments.map(({ id, date, name, service, phone }: ActiveAppointment) => {
-				return <AppointmentItem id={id} key={id} date={date} name={name} service={service} phone={phone} openModal={openModal} />
+				return <AppointmentItem id={id} key={id} date={date} name={name} service={service} phone={phone} openModal={openModal} page={"schedual"} />
 			})}
 			{isOpen ? <CancelModal toggleModal={setIsOpen} selectedId={selectedId} /> : null}
 		</>

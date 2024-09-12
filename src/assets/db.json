@@ -86,7 +86,7 @@
       "name": "Дятел",
       "service": "ppp",
       "phone": "+1 804 944 567",
-      "canceled": false
+      "canceled": true
     },
     {
       "id": 1725987384505,

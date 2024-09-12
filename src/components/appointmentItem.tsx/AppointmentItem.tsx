@@ -6,12 +6,14 @@ import { useContext } from 'react';
 import { AppointmentContext } from '../../context/appointments/AppointmentsContext';
 import "./appointmentItem.scss";
 
+type TPage = "history" | "schedual";
+
 type AppointmentProps = Optional<IAppointment, "canceled"> & {
 	openModal: (state: number) => void,
-
+	page: TPage
 }
 
-const AppointmentItem = memo(({ id, date, name, service, phone, canceled, openModal }: AppointmentProps) => {
+const AppointmentItem = memo(({ id, date, name, service, phone, canceled, openModal, page }: AppointmentProps) => {
 	const [timeLeft, setTimeLeft] = useState<string | null>(null);
 	const { getAllActiveAppointments } = useContext(AppointmentContext);
 
@@ -37,7 +39,7 @@ const AppointmentItem = memo(({ id, date, name, service, phone, canceled, openMo
 	}, [date])
 
 	const formattedDate = dayjs(date).format('DD/MM/YYYY HH:mm');
-	 console.log("render item");
+	console.log("render item");
 	return (
 		<div className="appointment">
 			<div className="appointment__info">
@@ -47,7 +49,7 @@ const AppointmentItem = memo(({ id, date, name, service, phone, canceled, openMo
 				<span className="appointment__phone">Phone: {phone}</span>
 			</div>
 
-			{!canceled ? <>
+			{page === "schedual" ? !canceled ? <>
 				<div className="appointment__time">
 					<span>Time left:</span>
 					<span className="appointment__timer">{timeLeft}</span>
@@ -55,7 +57,9 @@ const AppointmentItem = memo(({ id, date, name, service, phone, canceled, openMo
 				<button className="appointment__cancel" onClick={() => {
 					openModal(id)
 				}}>Cancel</button>
-			</> : <div className="appointment__canceled">Canceled</div>}
+			</> : <div className="appointment__canceled">Canceled</div> : null}
+
+ 
 
 			{/* <div className="appointment__canceled">Canceled</div> */}
 		</div>

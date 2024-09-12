@@ -19,9 +19,9 @@ function HistoryList() {
 	}, [])
 	return (
 		<>
-			{loadingStatus ? <Spinner /> :
+			{loadingStatus === "loading" ? <Spinner /> :
 				allAppointments.map(item => {
-					return <AppointmentItem id={item.id} date={item.date} name={item.name} phone={item.phone} canceled={item.canceled} openModal={() => { }} service={item.service} />
+					return <AppointmentItem page="history" id={item.id} date={item.date} name={item.name} phone={item.phone} canceled={item.canceled} openModal={() => { }} service={item.service} />
 				})}
 		</>
 	);
