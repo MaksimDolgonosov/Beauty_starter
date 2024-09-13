@@ -17,7 +17,8 @@ const AppointmentItem = memo(({ id, date, name, service, phone, canceled, openMo
 	const [timeLeft, setTimeLeft] = useState<string | null>(null);
 	const { getAllActiveAppointments } = useContext(AppointmentContext);
 
-	useEffect(() => {
+
+	const timerEffect = () => {
 		const hours = dayjs(date).diff(undefined, "h");
 		const minutes = dayjs(date).diff(undefined, "m") % 60;
 		setTimeLeft(`${hours}:${minutes}`);
@@ -36,7 +37,11 @@ const AppointmentItem = memo(({ id, date, name, service, phone, canceled, openMo
 		return () => {
 			clearInterval(intervalId)
 		}
-	}, [date])
+	}
+
+
+	// useEffect(timerEffect, [date]);
+	useEffect(page == "schedual" ? timerEffect : () => { }, page == "schedual" ? [date] : []);
 
 	const formattedDate = dayjs(date).format('DD/MM/YYYY HH:mm');
 	console.log("render item");
@@ -49,17 +54,19 @@ const AppointmentItem = memo(({ id, date, name, service, phone, canceled, openMo
 				<span className="appointment__phone">Phone: {phone}</span>
 			</div>
 
-			{page === "schedual" ? !canceled ? <>
-				<div className="appointment__time">
-					<span>Time left:</span>
-					<span className="appointment__timer">{timeLeft}</span>
-				</div>
-				<button className="appointment__cancel" onClick={() => {
-					openModal(id)
-				}}>Cancel</button>
-			</> : <div className="appointment__canceled">Canceled</div> : null}
+			{page === "schedual" ?
+				!canceled ? <>
+					<div className="appointment__time">
+						<span>Time left:</span>
+						<span className="appointment__timer">{timeLeft}</span>
+					</div>
+					<button className="appointment__cancel" onClick={() => {
+						openModal(id)
+					}}>Cancel</button>
+				</> : <div className="appointment__canceled">Canceled</div>
+				: canceled ? <div className="appointment__canceled">Canceled</div> : null}
 
- 
+
 
 			{/* <div className="appointment__canceled">Canceled</div> */}
 		</div>
