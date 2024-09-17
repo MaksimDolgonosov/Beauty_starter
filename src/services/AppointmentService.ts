@@ -37,6 +37,8 @@ export const useAppointmentService = () => {
                     phone: item.phone,
 
                 }
+            }).sort((a: ActiveAppointment, b: ActiveAppointment) => {
+                return new Date(a.date).getTime() - new Date(b.date).getTime()
             })
         return transformed;
     }

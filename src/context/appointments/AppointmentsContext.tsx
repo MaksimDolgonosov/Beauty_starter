@@ -3,10 +3,13 @@ import reducer, { IInitialState } from "./reducer";
 import { useAppointmentService } from "../../services/AppointmentService";
 import { ActionsTypes } from "./actions";
 import { LoadingStatus } from "../../hooks/http.hook";
+import { Value } from "react-calendar/dist/cjs/shared/types";
+
 
 const initialState: IInitialState = {
     allAppointments: [],
-    allActiveAppointments: []
+    allActiveAppointments: [],
+    calendarDate: [null, null]
 }
 
 interface ProviderProps {
@@ -16,7 +19,8 @@ interface ProviderProps {
 interface IContextValue extends IInitialState {
     loadingStatus: LoadingStatus
     getAllAppointments: () => void;
-    getAllActiveAppointments: () => void
+    getAllActiveAppointments: () => void,
+    setDateAndFilter: (newDate: Value) => void
 }
 
 export const AppointmentContext = createContext<IContextValue>({
@@ -24,7 +28,9 @@ export const AppointmentContext = createContext<IContextValue>({
     allAppointments: initialState.allAppointments,
     allActiveAppointments: initialState.allActiveAppointments,
     getAllAppointments: () => { },
-    getAllActiveAppointments: () => { }
+    getAllActiveAppointments: () => { },
+    calendarDate: [null, null],
+    setDateAndFilter: (newDate: Value) => { }
 });
 
 export const AppointmentContextProvider = ({ children }: ProviderProps) => {
@@ -36,14 +42,30 @@ export const AppointmentContextProvider = ({ children }: ProviderProps) => {
         loadingStatus: loadingStatus,
         allAppointments: state.allAppointments,
         allActiveAppointments: state.allActiveAppointments,
+        calendarDate: state.calendarDate,
         getAllAppointments: () => {
             getAllAppointments()
                 .then(data => dispatch({ type: ActionsTypes.SET_ALL_APPOINTMENTS, payload: data }));
         },
         getAllActiveAppointments: () => {
             getAllActiveAppointments()
-                .then(data => dispatch({ type: ActionsTypes.SET_ACTIVE_APPOINTMENTS, payload: data }));
+                .then(data => {
+                    const filteredData = data.filter(item => {
+                        if (Array.isArray(state.calendarDate) && state.calendarDate[0] && state.calendarDate[1]) {
+                            if (new Date(item.date).getTime() >= new Date(state.calendarDate[0]).getTime() && new Date(item.date).getTime() <= new Date(state.calendarDate[1]).getTime()) {
+                                return item;
+                            }
+                        } else {
+                            return item;
+                        }
+                    })
+                    dispatch({ type: ActionsTypes.SET_ACTIVE_APPOINTMENTS, payload: filteredData })
+                })
+        },
+        setDateAndFilter: (newDate: Value) => {
+            dispatch({ type: ActionsTypes.SET_CALENDAR_DATE, payload: newDate })
         }
+
     }
 
     return (
