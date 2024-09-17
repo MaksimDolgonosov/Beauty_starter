@@ -17,7 +17,9 @@ export const useAppointmentService = () => {
         if (Array.isArray(res) && res.every((item: IAppointment) => {
             return hasRequiredFields(item, requiredFields)
         })) {
-            return res;
+            return res.sort((a: ActiveAppointment, b: ActiveAppointment) => {
+                return new Date(a.date).getTime() - new Date(b.date).getTime()
+            });
         } else {
             throw new Error("Data doesn't have all fields");
         }
@@ -53,10 +55,10 @@ export const useAppointmentService = () => {
 
     }
 
-    const createNewAppointment = async (body: IAppointment) => {
-        body.id = await new Date().getTime();
-        body.date = await dayjs(body.date, "DD/MM/YYYY HH:mm").format('YYYY-MM-DDTHH:mm')
-        return await request(
+    const createNewAppointment = (body: IAppointment) => {
+        body.id = new Date().getTime();
+        body.date = dayjs(body.date, "DD/MM/YYYY HH:mm").format('YYYY-MM-DDTHH:mm')
+        return request(
             {
                 url: _apiBase,
                 method: "POST",

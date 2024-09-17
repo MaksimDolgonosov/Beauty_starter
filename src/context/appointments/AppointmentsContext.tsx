@@ -35,7 +35,7 @@ export const AppointmentContext = createContext<IContextValue>({
 
 export const AppointmentContextProvider = ({ children }: ProviderProps) => {
     const [state, dispatch] = useReducer(reducer, initialState);
-    const { loadingStatus, getAllAppointments, getAllActiveAppointments } = useAppointmentService();
+    const { loadingStatus, getAllAppointments, getAllActiveAppointments } =  useAppointmentService();
 
 
     const value: IContextValue = {
@@ -45,7 +45,18 @@ export const AppointmentContextProvider = ({ children }: ProviderProps) => {
         calendarDate: state.calendarDate,
         getAllAppointments: () => {
             getAllAppointments()
-                .then(data => dispatch({ type: ActionsTypes.SET_ALL_APPOINTMENTS, payload: data }));
+            .then(data => {
+                const filteredData = data.filter(item => {
+                    if (Array.isArray(state.calendarDate) && state.calendarDate[0] && state.calendarDate[1]) {
+                        if (new Date(item.date).getTime() >= new Date(state.calendarDate[0]).getTime() && new Date(item.date).getTime() <= new Date(state.calendarDate[1]).getTime()) {
+                            return item;
+                        }
+                    } else {
+                        return item;
+                    }
+                })
+                dispatch({ type: ActionsTypes.SET_ALL_APPOINTMENTS, payload: filteredData })
+            })
         },
         getAllActiveAppointments: () => {
             getAllActiveAppointments()
@@ -64,6 +75,7 @@ export const AppointmentContextProvider = ({ children }: ProviderProps) => {
         },
         setDateAndFilter: (newDate: Value) => {
             dispatch({ type: ActionsTypes.SET_CALENDAR_DATE, payload: newDate })
+
         }
 
     }

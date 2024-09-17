@@ -1,10 +1,15 @@
 import AppointmentList from "../../components/appointmentList/AppointmentList";
 import Calendar from "../../components/calendar/Calendar";
 import CAForm from "../../components/createAppointmentForm/CAForm";
-
+import { useContext, useEffect } from "react";
+import { AppointmentContext } from "../../context/appointments/AppointmentsContext";
 import "./schedulePage.scss";
 
 function SchedulePage() {
+	const { setDateAndFilter } = useContext(AppointmentContext);
+	useEffect(() => {
+		setDateAndFilter([null, null])
+	}, [])
 	return (
 		<section className="schedule">
 			<div className="schedule__controls">

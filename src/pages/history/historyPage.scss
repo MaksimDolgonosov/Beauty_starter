@@ -4,9 +4,12 @@
 	column-gap: 120px;
 	padding-top: 50px;
 	&__controls {
-		display: grid;
-		grid-template-rows: 272px;
-		row-gap: 50px;
+		// display: grid;
+		// grid-template-rows: 272px;
+		// row-gap: 50px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 	&__list {
 		display: grid;

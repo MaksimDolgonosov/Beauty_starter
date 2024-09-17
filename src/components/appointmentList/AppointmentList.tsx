@@ -9,7 +9,7 @@ import Error from "../error/Error";
 function AppointmentList() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedId, setSelectId] = useState(0);
-	const { allActiveAppointments, getAllActiveAppointments, loadingStatus } = useContext(AppointmentContext);
+	const { allActiveAppointments, getAllActiveAppointments, loadingStatus, calendarDate } = useContext(AppointmentContext);
 
 	const openModal = useCallback((id: number) => {
 		setIsOpen(true);
@@ -18,7 +18,7 @@ function AppointmentList() {
 
 	useEffect(() => {
 		getAllActiveAppointments();
-	}, [])
+	}, [calendarDate])
 
 	const reload: React.MouseEventHandler = (e): void => {
 		e.preventDefault();

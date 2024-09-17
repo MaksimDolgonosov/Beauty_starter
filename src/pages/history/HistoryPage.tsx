@@ -1,8 +1,15 @@
 import Calendar from "../../components/calendar/Calendar";
 import HistoryList from "../../components/historyList/HistoryList";
+import { useContext, useEffect } from "react";
+import { AppointmentContext } from "../../context/appointments/AppointmentsContext";
 import "./historyPage.scss";
-function HistoryPage() {
 
+
+function HistoryPage() {
+	const { setDateAndFilter } = useContext(AppointmentContext);
+	useEffect(() => {
+		setDateAndFilter([null, null])
+	}, [])
 	return (
 		<section className="history">
 			<div className="history__controls">

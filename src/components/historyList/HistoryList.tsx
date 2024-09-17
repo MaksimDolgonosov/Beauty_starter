@@ -9,14 +9,13 @@ interface IHistoryProps extends IAppointment {
 }
 
 function HistoryList() {
-	const { getAllAppointments, allAppointments, loadingStatus } = useContext(AppointmentContext);
+	const { getAllAppointments, allAppointments, loadingStatus, calendarDate } = useContext(AppointmentContext);
 
 	useEffect(() => {
 		console.log("history")
 		getAllAppointments();
-		console.log(allAppointments)
 		// .then((res: IAppointment[]) => console.log(res))
-	}, [])
+	}, [calendarDate])
 	return (
 		<>
 			{loadingStatus === "loading" ? <Spinner /> :
